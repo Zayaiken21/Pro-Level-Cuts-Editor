@@ -31,7 +31,7 @@
       { el: '#formatCard', title: '2 · Format & frame', text: 'Choose where you\'re posting — Instagram Reels & Stories, TikTok, YouTube Shorts, an Instagram or theCut post, or a YouTube video — then the background, frame and fit.', after: 'Shows up once you add a video.' },
       { el: '#overlayCard', title: '3 · Overlays & stickers', text: 'Add titles, text, your logo and barber stickers — clippers, razor, scissors, comb, barber pole, crown. Drag them right on the preview to place and size them.', after: 'Shows up once you add a video.' },
       { el: '#fmFxCard', title: 'Effects', text: 'Put lights, sparkle, barber effects (falling clippings, clipper buzz, razor shine), film looks and movement on the clip under the playhead or on the whole video. Stack as many as you like.', after: 'Shows up once you add a video.' },
-      { el: '#tlBox', title: 'Timeline & layers', text: 'Every clip and every overlay is a layer on the timeline. Tap to move the playhead, ✂ Split to cut a clip, drag a layer to move it and drag its ends to set when it shows.', after: 'Shows up once you add a video.' },
+      { el: '#tlBox', title: 'Timeline & layers', text: 'Every clip and every overlay is a layer on the timeline. Swipe a clip’s ends to make it shorter or longer, ✂ Split to cut, add photos and videos as layers and use ⬆ / ⬇ to put a layer in front of or under the main video.', after: 'Shows up once you add a video.' },
       { el: '#exportCard', title: '4 · Preview & export', text: 'Play it back, go full screen, and export the finished MP4 to save or share.', after: 'Shows up once you add a video.' },
       { el: '[data-tour-btn]', title: 'You\'re ready', text: 'Tap Tutorial at the top right any time to see this again.' }
     ]
