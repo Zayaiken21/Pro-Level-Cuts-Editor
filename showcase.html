@@ -18,13 +18,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=plc2">
-  <script src="js/core.js?v=plc2" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=plc3">
+  <script src="js/core.js?v=plc3" defer></script>
   <script src="js/vendor/mp4-muxer.min.js" defer></script>
-  <script src="js/fullscreen.js?v=plc2" defer></script>
-  <script src="js/showcase-fx.js?v=plc2" defer></script>
-  <script src="js/showcase-fold.js?v=plc2" defer></script>
-  <script src="js/showcase.js?v=plc2" defer></script>
+  <script src="js/fullscreen.js?v=plc3" defer></script>
+  <script src="js/showcase-fx.js?v=plc3" defer></script>
+  <script src="js/vendor/peerjs.min.js?v=1.5.4" defer></script>
+  <script src="js/showcase-p2p.js?v=1" defer></script>
+  <script src="js/showcase-fold.js?v=plc3" defer></script>
+  <script src="js/showcase.js?v=plc3" defer></script>
 </head>
 <body data-page="showcase">
   <header class="topbar">
@@ -60,7 +62,7 @@
         <section class="card sc-acct" aria-labelledby="acctTitle" id="acctCard">
           <div class="sc-projhead">
             <div><h2 id="acctTitle">👤 <span id="acctName">Not signed in</span></h2>
-              <p class="muted small" id="acctNote"></p></div>
+              <p class="muted small" id="acctNote"></p><p class="small sc-net" id="acctNet" aria-live="polite"></p></div>
             <div class="row sc-projbtns">
               <button class="btn" type="button" id="acctSignIn">🔑 Sign in</button>
               <button class="btn btn-ghost" type="button" id="acctCreate">➕ Make an account</button>
