@@ -1376,6 +1376,12 @@ input[type="range"] { min-height: 32px; }            /* finger-friendly */
 .sc-acct.sc-folded #acctNet{display:none}
 #shP2P{margin:.2rem 0 .6rem}
 
+.sc-badge{font-size:.8rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;background:rgba(214, 168, 74,.22);color:#f7e7c6;white-space:nowrap}
+.sc-inb>div:nth-child(2) .small{display:block}
+.sc-out-accepted{border-color:rgba(52,211,153,.5)}
+.sc-out-declined{border-color:rgba(248,113,113,.45);opacity:.85}
+.sc-out-waiting{border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.06)}
+
 /* ===== Pro Level Cuts brand ===== */
 :root { --font-display: "Oswald", "Bebas Neue", Impact, "Arial Narrow Bold", sans-serif; --ember: #e4572e; --gold: #d6a84a; }
 body { background: radial-gradient(1200px 600px at 85% -10%, rgba(214,168,74,.13), transparent 60%), radial-gradient(900px 500px at -10% 10%, rgba(228,87,46,.08), transparent 60%), var(--bg); }
