@@ -1,6 +1,6 @@
 # Pro Level Cuts
 
-Photo Showcase and Video Editor for **Pro Level Cuts** (Curtis) — live at **https://zayaiken21.github.io/Pro-Level-Cuts-Editor/**
+Professional photo and video editing for barbers — **Pro Level Cuts** — live at **https://zayaiken21.github.io/Pro-Level-Cuts-Editor/**
 
 | Page | File | What it does |
 |---|---|---|
@@ -12,15 +12,21 @@ Everything runs in the browser and is saved on the device (IndexedDB `pro-level-
 
 ## Brand
 
+From the Pro Level Cuts card: deep black with bright gold.
+
 | | Colour |
 |---|---|
-| Onyx (background) | `#0E0C0A` |
-| Champagne gold (main) | `#D6A84A` |
-| Light gold | `#EBC46A` |
-| Ember (the razor cut line) | `#E4572E` |
-| Ivory (text) | `#F6EFE3` |
+| Black (background) | `#070707` |
+| Gold (main) | `#E0AA3E` |
+| Light gold | `#F2CB6B` / `#FFE7A3` |
+| Deep gold | `#C8922B` |
+| Ivory (text) | `#F6EEDB` |
 
-Logo: a gold **PL** monogram in a rounded gold frame with an ember razor line cut through it (`icons/logo.svg`). Headings use Oswald. Photo Showcase starts with the shop name **Pro Level Cuts** and the gold colour; the @handle and booking line are set once in *Your brand*.
+Logo: the black box truck with gold trim and the **PLC** monogram on its side (gold P, a barber-pole L with a crown, gold C), above **PRO LEVEL CUTS** in Cinzel and **MOBILE BARBER** (`icons/logo-lockup.svg`). The app icon is the truck in a gold-framed black tile (`icons/logo.svg`); the header uses the monogram and name (`icons/logo-wordmark.svg`). Headings use Cinzel, text uses Montserrat.
+
+## Tutorial
+
+Every page has a **❓ Tutorial** button at the top right. The tour opens by itself the first time a page is visited, points at each part with an arrow and explains it; **Skip tour** closes it, and it won't open by itself again (`js/tour.js`).
 
 ## Where the code comes from
 

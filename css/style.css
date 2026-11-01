@@ -4,21 +4,21 @@
    ========================================================= */
 
 :root {
-  --bg: #0e0c0a;
-  --bg-2: #15120e;
-  --surface: #1c1814;
-  --surface-2: #25201a;
-  --surface-3: #2f2920;
-  --line: #44392a;
-  --line-soft: rgba(235, 196, 106, 0.14);
-  --text: #f6efe3;
-  --muted: #c7b89e;
-  --faint: #8f826c;
-  --primary: #d6a84a;
-  --primary-2: #ebc46a;
-  --primary-ink: #1a1206;
-  --accent: #e4572e;
-  --sky: #f0d28a;
+  --bg: #070707;
+  --bg-2: #0d0c0b;
+  --surface: #141311;
+  --surface-2: #1b1916;
+  --surface-3: #24211c;
+  --line: #3a3223;
+  --line-soft: rgba(242, 203, 107, 0.16);
+  --text: #f6eedb;
+  --muted: #c2b59b;
+  --faint: #8a7f6c;
+  --primary: #e0aa3e;
+  --primary-2: #f2cb6b;
+  --primary-ink: #140e04;
+  --accent: #c8922b;
+  --sky: #ffe7a3;
   --ok: #34d399;
   --warn: #fbbf24;
   --danger: #f87171;
@@ -1137,7 +1137,7 @@ input[type="range"] { min-height: 32px; }            /* finger-friendly */
 .fm-fr-rounded i { border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,.5); }
 .fm-fr-border i { outline: 3px solid #fff; outline-offset: -3px; }
 .fm-fr-polaroid i { border: 4px solid #fff; border-bottom-width: 10px; border-radius: 3px; }
-.fm-fr-neon i { border: 2px solid #e4572e; box-shadow: 0 0 8px #e4572e, inset 0 0 6px rgba(225, 169, 47,.6); }
+.fm-fr-neon i { border: 2px solid #c8922b; box-shadow: 0 0 8px #c8922b, inset 0 0 6px rgba(225, 169, 47,.6); }
 .fm-fr-film i { border-top: 7px dotted #ddd; border-bottom: 7px dotted #ddd; background-color: #000; }
 .fm-fr-tv i { border: 4px solid #3a3f4b; border-radius: 10px; }
 .fm-upload { position: relative; overflow: hidden; cursor: pointer; }
@@ -1381,28 +1381,64 @@ input[type="range"] { min-height: 32px; }            /* finger-friendly */
 .sc-out-accepted{border-color:rgba(52,211,153,.5)}
 .sc-out-declined{border-color:rgba(248,113,113,.45);opacity:.85}
 .sc-out-waiting{border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.06)}
+/* Video Formatter: Fit / Fill side by side on every screen */
+#fitSeg { display: grid; grid-template-columns: 1fr 1fr; width: 100%; box-sizing: border-box; }
+#fitSeg button { white-space: normal; line-height: 1.25; min-height: 48px; text-align: center; justify-content: center; }
 
 /* ===== Pro Level Cuts brand ===== */
-:root { --font-display: "Oswald", "Bebas Neue", Impact, "Arial Narrow Bold", sans-serif; --ember: #e4572e; --gold: #d6a84a; }
+:root { --font-display: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif; --font: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --gold: #e0aa3e; --gold-hi: #ffe7a3; --gold-deep: #c8922b; }
+.btn:not(.btn-ghost) { background: linear-gradient(180deg, #ffe7a3, #e9b949 45%, #c8922b); border-color: #c8922b; }
+.topbar { background: rgba(7,7,7,.88); border-bottom: 1px solid rgba(224,170,62,.28); }
+.brand img.plc-wordmark { width: auto; height: 34px; border-radius: 0; }
+.nav-head img.plc-wordmark { width: auto; height: 28px; border-radius: 0; }
+.plc-tourbtn { margin-left: auto; margin-right: 8px; display: inline-flex; align-items: center; gap: 6px; font: inherit; font-weight: 600; font-size: .92rem; color: var(--gold-hi);
+  background: rgba(224,170,62,.10); border: 1px solid rgba(224,170,62,.55); border-radius: 999px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+.plc-tourbtn:hover { background: rgba(224,170,62,.2); }
+@media (min-width: 901px) { .plc-tourbtn { order: 3; margin: 0 0 0 12px; } }
+@media (max-width: 420px) { .plc-tourbtn span { display: none; } .plc-tourbtn { padding: 8px 11px; } }
+/* tutorial */
+.plc-tour { position: fixed; inset: 0; z-index: 9000; }
+.plc-tour-hole { position: fixed; border-radius: 14px; box-shadow: 0 0 0 9999px rgba(0,0,0,.72); border: 2px solid var(--gold); transition: all .25s ease; pointer-events: none; }
+.plc-tour-card { position: fixed; background: linear-gradient(180deg, #1b1916, #0f0e0c); border: 1px solid var(--gold); border-radius: 16px; padding: 16px 16px 14px; box-shadow: 0 18px 50px rgba(0,0,0,.6); color: var(--text); transition: top .25s ease, left .25s ease; }
+.plc-tour-count { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.plc-tour-title { font-family: var(--font-display); margin: 6px 0 6px; font-size: 1.2rem; color: var(--gold-hi); }
+.plc-tour-text { margin: 0 0 6px; color: var(--text); line-height: 1.5; font-size: 1rem; }
+.plc-tour-after { margin: 4px 0 0; color: var(--muted); font-size: .9rem; font-style: italic; }
+.plc-tour-btns { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.plc-tour-nav { display: inline-flex; gap: 8px; }
+.plc-tour-arrow { position: absolute; width: 0; height: 0; transform: translateX(-50%); }
+.plc-arrow-top { top: -13px; border-left: 13px solid transparent; border-right: 13px solid transparent; border-bottom: 13px solid var(--gold); }
+.plc-arrow-bottom { bottom: -13px; border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 13px solid var(--gold); }
+.plc-arrow-top::after, .plc-arrow-bottom::after { content: ""; position: absolute; left: -26px; width: 0; height: 0; animation: plcBob 1s ease-in-out infinite alternate; }
+@keyframes plcBob { from { transform: translateY(0); } to { transform: translateY(3px); } }
+.plc-tour-arrow.plc-arrow-top { animation: plcBobUp 1s ease-in-out infinite alternate; }
+.plc-tour-arrow.plc-arrow-bottom { animation: plcBob 1s ease-in-out infinite alternate; }
+@keyframes plcBobUp { from { margin-top: 0; } to { margin-top: -5px; } }
+@media (prefers-reduced-motion: reduce) { .plc-tour-arrow, .plc-tour-hole, .plc-tour-card { animation: none !important; transition: none !important; } }
 body { background: radial-gradient(1200px 600px at 85% -10%, rgba(214,168,74,.13), transparent 60%), radial-gradient(900px 500px at -10% 10%, rgba(228,87,46,.08), transparent 60%), var(--bg); }
-h1, h2, .brand span, .plc-word { font-family: var(--font-display); letter-spacing: .01em; }
+body { font-family: var(--font); }
+h1, h2, .brand span, .plc-word { font-family: var(--font-display); letter-spacing: .02em; }
 h1 { text-transform: uppercase; font-weight: 700; }
 .brand span { text-transform: uppercase; font-weight: 600; letter-spacing: .06em; }
 .brand b { color: var(--gold); }
 .eyebrow { color: var(--gold); }
 .btn:not(.btn-ghost) { color: var(--primary-ink); }
 .cx-num { background: linear-gradient(135deg, #f3d27a, #d6a84a 55%, #a8792a); color: #1a1206; }
-.card { background: linear-gradient(180deg, #211c16, #17140f); border-color: rgba(235,196,106,.16); }
+.card { background: linear-gradient(180deg, #161512, #0d0c0b); border-color: rgba(224,170,62,.22); }
 .card::before { content: none; }
 .plc-hero { position: relative; overflow: hidden; border-radius: 22px; padding: clamp(22px, 5vw, 48px); margin: 8px 0 22px;
   background: linear-gradient(160deg, #1d1813, #0e0c0a 70%); border: 1px solid var(--line); }
 .plc-hero::after { content: ""; position: absolute; inset: auto -20% -40% auto; width: 70%; aspect-ratio: 1; border-radius: 50%;
   background: radial-gradient(circle, rgba(214,168,74,.22), transparent 65%); pointer-events: none; }
-.plc-hero .plc-mark { width: clamp(72px, 16vw, 112px); height: auto; display: block; margin-bottom: 14px; }
+.plc-hero .plc-lockup { width: min(560px, 100%); height: auto; display: block; margin: 0 auto 10px; }
+.plc-hero { text-align: center; }
+.plc-hero p { margin-left: auto !important; margin-right: auto !important; }
+.plc-hero .row { justify-content: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .plc-hero h1 { font-size: clamp(2.4rem, 1.4rem + 6vw, 4.6rem); line-height: .95; margin: 0 0 12px; }
 .plc-hero h1 em { font-style: normal; color: var(--gold); }
 .plc-hero p { color: var(--muted); max-width: 52ch; font-size: 1.08rem; margin: 0 0 18px; }
-.plc-cut { height: 4px; width: min(220px, 50%); margin: 0 0 18px; border-radius: 4px; background: linear-gradient(90deg, var(--gold), var(--ember)); }
+.plc-cut { height: 2px; width: min(260px, 60%); margin: 0 auto 18px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
 .plc-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
 .plc-tool { display: flex; flex-direction: column; gap: 8px; padding: 22px; border-radius: 18px; text-decoration: none; color: inherit;
   background: var(--surface); border: 1px solid var(--line); transition: transform .15s, border-color .15s; min-width: 0; }

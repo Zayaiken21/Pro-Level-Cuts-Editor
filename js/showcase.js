@@ -48,7 +48,7 @@
 
   var S = Object.assign({ format: 'ig45', trans: 'mix', dur: 2.5, kenBurns: true, intro: true, outro: true, plain: false, showStage: true, showAngle: true, showBrand: true, showTitle: true, showText: true,
     fxAll: [], big: false, beatSync: true, musicVol: 85, musicStart: null, capStyle: 'box', capPos: 'bottom', capAnim: 'pop', capSize: 1, introTitle: '', introSub: '', outroTitle: '', outroSub: '',
-    shop: 'Pro Level Cuts', handle: '', book: '', color: '#D6A84A', wmPos: 'br', wmStyle: 'tag' }, YB.store.get('scSettings', {}));
+    shop: 'Pro Level Cuts', handle: '', book: '', color: '#E0AA3E', wmPos: 'br', wmStyle: 'tag' }, YB.store.get('scSettings', {}));
   if (!FORMATS[S.format]) S.format = 'ig45';
   if (S.fx) { delete S.fx; }
   if (!Array.isArray(S.fxAll)) S.fxAll = [];

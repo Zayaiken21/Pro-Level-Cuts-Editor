@@ -17,28 +17,30 @@
   <meta name="apple-mobile-web-app-title" content="Pro Level Cuts">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=plc4">
-  <script src="js/core.js?v=plc4" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=plc6">
+  <script src="js/core.js?v=plc6" defer></script>
+  <script src="js/tour.js?v=plc6" defer></script>
   <script src="js/vendor/mp4-muxer.min.js" defer></script>
-  <script src="js/fullscreen.js?v=plc4" defer></script>
-  <script src="js/showcase-fx.js?v=plc4" defer></script>
+  <script src="js/fullscreen.js?v=plc6" defer></script>
+  <script src="js/showcase-fx.js?v=plc6" defer></script>
   <script src="js/vendor/peerjs.min.js?v=1.5.4" defer></script>
   <script src="js/showcase-p2p.js?v=2" defer></script>
-  <script src="js/showcase-fold.js?v=plc4" defer></script>
-  <script src="js/showcase.js?v=plc4" defer></script>
+  <script src="js/showcase-fold.js?v=plc6" defer></script>
+  <script src="js/showcase.js?v=plc6" defer></script>
 </head>
 <body data-page="showcase">
   <header class="topbar">
     <div class="container topbar-inner">
-      <a class="brand" href="index.html"><img src="icons/logo.svg" alt="" width="34" height="34"><span>Pro Level <b>Cuts</b></span></a>
+      <a class="brand" href="index.html" aria-label="Pro Level Cuts — home"><img class="plc-wordmark" src="icons/logo-wordmark.svg" alt="Pro Level Cuts" height="34"></a>
       <nav class="nav" id="nav" aria-label="Main">
-        <div class="nav-head"><img src="icons/logo.svg" alt="" width="30" height="30">Pro Level Cuts</div>
+        <div class="nav-head"><img class="plc-wordmark" src="icons/logo-wordmark.svg" alt="Pro Level Cuts" height="28"></div>
         <a href="index.html" data-page="home"><span class="nav-ico">🏠</span>Home</a>
         <a href="showcase.html" data-page="showcase"><span class="nav-ico">📸</span>Photo Showcase</a>
         <a href="formatter.html" data-page="formatter"><span class="nav-ico">🎬</span>Video Editor</a>
         <div class="nav-foot"><button class="btn" type="button" data-install hidden>📲 Add to Home Screen</button></div>
       </nav>
+      <button class="plc-tourbtn" type="button" data-tour-btn aria-label="Tutorial">❓ <span>Tutorial</span></button>
       <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
     </div>
   </header>

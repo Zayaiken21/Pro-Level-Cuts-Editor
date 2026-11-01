@@ -1,11 +1,11 @@
 /* Pro Level Cuts — service worker
    Network first (so your edits show up right away), cache as offline backup.
    Bump CACHE when you want installed copies to drop old files. */
-const CACHE = 'plc-v4';
+const CACHE = 'plc-v6';
 const ASSETS = [
   './', 'index.html', 'showcase.html', 'formatter.html', 'css/style.css',
   'js/core.js', 'js/vendor/mp4-muxer.min.js', 'js/fullscreen.js', 'js/showcase-fx.js', 'js/showcase-fold.js', 'js/showcase-p2p.js', 'js/vendor/peerjs.min.js', 'js/showcase.js', 'js/formatter.js',
-  'manifest.webmanifest', 'icons/logo.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'
+  'js/tour.js', 'manifest.webmanifest', 'icons/logo.svg', 'icons/logo-lockup.svg', 'icons/logo-wordmark.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'
 ];
 
 self.addEventListener('install', (e) => {

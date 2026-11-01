@@ -15,15 +15,15 @@
   'use strict';
 
   var FORMATS = {
-    short: { w: 1080, h: 1920, name: 'Short', sub: '9:16 · 1080×1920', ico: '📱' },
-    long: { w: 1920, h: 1080, name: 'Long form', sub: '16:9 · 1920×1080', ico: '🖥️' },
-    square: { w: 1080, h: 1080, name: 'Square', sub: '1:1 · 1080×1080', ico: '⬛' },
-    portrait: { w: 1080, h: 1350, name: 'Portrait', sub: '4:5 · 1080×1350', ico: '🖼️' }
+    short: { w: 1080, h: 1920, name: 'Reels · TikTok · Shorts', sub: '9:16 · Instagram Reels & Stories, TikTok, YouTube Shorts', ico: '📱' },
+    long: { w: 1920, h: 1080, name: 'YouTube video', sub: '16:9 · YouTube, Facebook, websites', ico: '🖥️' },
+    square: { w: 1080, h: 1080, name: 'Square post', sub: '1:1 · Instagram, theCut, Facebook', ico: '⬛' },
+    portrait: { w: 1080, h: 1350, name: 'Instagram post', sub: '4:5 · Instagram & Facebook feed', ico: '🖼️' }
   };
   var BGS = [
     ['blur', 'Blurred video'], ['black', 'Black'], ['white', 'White'], ['color', 'Your colour'],
     ['sunset', 'Sunset', ['#ff7e5f', '#feb47b']], ['ocean', 'Ocean', ['#2193b0', '#6dd5ed']], ['night', 'Night', ['#0f2027', '#2c5364']],
-    ['candy', 'Candy', ['#ee9ca7', '#ffdde1']], ['brand', 'Blue → violet', ['#1e7bff', '#a855f7']], ['image', 'Your image']
+    ['candy', 'Candy', ['#ee9ca7', '#ffdde1']], ['brand', 'Gold', ['#c8922b', '#ffe7a3']], ['image', 'Your image']
   ];
   var FRAMES = [['none', 'None'], ['rounded', 'Rounded'], ['border', 'Border'], ['polaroid', 'Photo card'], ['neon', 'Neon'], ['film', 'Film strip'], ['tv', 'TV']];
   var FONTS = {
@@ -634,7 +634,7 @@
     var tl = timeline(), d = dims(), f = FORMATS[S.format];
     $('facts').innerHTML = clips.length ? '<span><b>' + clips.length + '</b> clip' + (clips.length === 1 ? '' : 's') + '</span><span><b>' + mmss(tl.total) + '</b> long</span><span><b>' + d.W + '×' + d.H + '</b></span><span>' + f.ico + ' ' + f.name + '</span>' + (overlays.length ? '<span><b>' + overlays.length + '</b> overlay' + (overlays.length === 1 ? '' : 's') + '</span>' : '') + (music ? '<span>🎵 music</span>' : '') : '';
     var w = $('lenWarn');
-    if (S.format === 'short' && tl.total > 180) { w.hidden = false; w.textContent = 'This runs ' + mmss(tl.total) + '. YouTube Shorts can be up to 3 minutes — longer videos upload as regular videos. Trim the clips or choose Long form.'; }
+    if (S.format === 'short' && tl.total > 180) { w.hidden = false; w.textContent = 'This runs ' + mmss(tl.total) + '. Instagram Reels and YouTube Shorts can be up to 3 minutes (TikTok up to 10). Trim the clips, or choose YouTube video for longer ones.'; }
     else w.hidden = true;
     $('exportBtn').disabled = !clips.length || !!rec;
   }
