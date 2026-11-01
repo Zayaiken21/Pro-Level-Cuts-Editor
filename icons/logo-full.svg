@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pro Level Cuts">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6da8a"/><stop offset=".55" stop-color="#d6a84a"/><stop offset="1" stop-color="#9f7026"/></linearGradient></defs>
+  <rect width="512" height="512" fill="#0e0c0a"/><g transform="translate(51 51) scale(.8)">
+  <rect width="512" height="512" rx="112" fill="#0e0c0a"/>
+  <rect x="26" y="26" width="460" height="460" rx="92" fill="none" stroke="url(#g)" stroke-width="14"/>
+  <rect x="112" y="128" width="58" height="264" rx="10" fill="url(#g)"/>
+  <path d="M164 128 H238 a80 80 0 0 1 0 160 H164 v-54 h70 a26 26 0 0 0 0 -52 h-70 z" fill="url(#g)"/>
+  <rect x="332" y="128" width="58" height="264" rx="10" fill="url(#g)"/>
+  <rect x="332" y="336" width="96" height="56" rx="10" fill="url(#g)"/>
+  <path d="M80 372 L440 140" stroke="#0e0c0a" stroke-width="24" stroke-linecap="round"/>
+  <path d="M92 364 L428 148" stroke="#e4572e" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>
