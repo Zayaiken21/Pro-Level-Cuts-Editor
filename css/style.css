@@ -1427,6 +1427,10 @@ input[type="range"] { min-height: 32px; }            /* finger-friendly */
 .fm-teye { position: sticky; left: 2px; z-index: 2; float: left; margin-top: 3px; width: 24px; height: 24px; padding: 0; font-size: .8rem; line-height: 1; border-radius: 6px; border: 1px solid var(--line); background: rgba(0,0,0,.65); color: #fff; cursor: pointer; }
 .fm-tlayer.off { opacity: .35; }
 
+.sc-fxsearch { width: 100%; box-sizing: border-box; font: inherit; font-size: 1rem; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,.25); color: var(--text); margin: 6px 0 4px; }
+.sc-fxcats.dim { opacity: .55; }
+#fmBeat { margin: 4px 0 2px; }
+
 /* ===== Pro Level Cuts brand ===== */
 :root { --font-display: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif; --font: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --gold: #e0aa3e; --gold-hi: #ffe7a3; --gold-deep: #c8922b; }
 .btn:not(.btn-ghost) { background: linear-gradient(180deg, #ffe7a3, #e9b949 45%, #c8922b); border-color: #c8922b; }

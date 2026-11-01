@@ -18,14 +18,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=plc7">
-  <script src="js/core.js?v=plc7" defer></script>
-  <script src="js/tour.js?v=plc7" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=plc8">
+  <script src="js/core.js?v=plc8" defer></script>
+  <script src="js/tour.js?v=plc8" defer></script>
   <script src="js/vendor/mp4-muxer.min.js" defer></script>
-  <script src="js/fullscreen.js?v=plc7" defer></script>
-  <script src="js/showcase-fx.js?v=plc7" defer></script>
-  <script src="js/formatter.js?v=plc7" defer></script>
-  <script src="js/formatter-pro.js?v=plc7" defer></script>
+  <script src="js/fullscreen.js?v=plc8" defer></script>
+  <script src="js/showcase-fx.js?v=plc8" defer></script>
+  <script src="js/formatter.js?v=plc8" defer></script>
+  <script src="js/formatter-pro.js?v=plc8" defer></script>
 </head>
 <body data-page="formatter">
   <header class="topbar">
@@ -145,12 +145,15 @@
         <!-- ===== Effects ===== -->
         <section class="card" aria-labelledby="fmFxTitle" id="fmFxCard" hidden>
           <h2 id="fmFxTitle"><span class="cx-num">✨</span>Effects</h2>
-          <p class="muted small" style="margin:0 0 10px">Lights, sparkle, barber effects, film looks, glitch, movement and frames. Put them on the clip under the playhead or on the whole video, stack as many as you like, and choose Light, Medium or Strong.</p>
+          <p class="muted small" style="margin:0 0 10px">Thousands of effects — lights, sparkle, barber effects, film looks, glitch, movement and frames, in many colours and speeds. Everything follows the beat of your video by itself. Put them on the clip under the playhead or on the whole video, stack as many as you like, and choose Light, Medium or Strong.</p>
           <div id="fmFx">
             <div class="seg fm-fxtarget" id="fmFxTarget" role="group" aria-label="Apply to"></div>
             <ul class="fm-fxonlist" id="fmFxOn"></ul>
+            <p class="small sc-net on" id="fmBeat" aria-live="polite"></p>
+            <input type="search" id="fmFxSearch" class="sc-fxsearch" autocomplete="off" placeholder="Search all effects — try “gold confetti”, “beat”, “clippings fast”" aria-label="Search effects">
             <div class="fm-fxcats" id="fmFxCats" role="group" aria-label="Kinds of effects"></div>
             <div class="fm-fxtiles" id="fmFxTiles"></div>
+            <button class="btn btn-ghost" type="button" id="fmFxMore" hidden style="width:100%;margin-top:8px">Show more</button>
           </div>
         </section>
       </div>
