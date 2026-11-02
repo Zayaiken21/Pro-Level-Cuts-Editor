@@ -431,21 +431,22 @@
   /* ---------- Cards (intro / outro) ---------- */
   function renderCard(kind, W, H) {
     var c = document.createElement('canvas'); c.width = W; c.height = H;
-    var x = c.getContext('2d'), base = Math.min(W, H), col = S.color;
-    var g = x.createLinearGradient(0, 0, W * 0.3, H); g.addColorStop(0, '#0b0b10'); g.addColorStop(1, '#17171f'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var x = c.getContext('2d'), base = Math.min(W, H), col = '#E0AA3E';   // Pro Level Cuts gold
+    var g = x.createLinearGradient(0, 0, W * 0.3, H); g.addColorStop(0, '#050403'); g.addColorStop(1, '#14100a'); x.fillStyle = g; x.fillRect(0, 0, W, H);
     var r = x.createRadialGradient(W / 2, H * 0.42, 0, W / 2, H * 0.42, Math.max(W, H) * 0.6); r.addColorStop(0, hexA(col, 0.32)); r.addColorStop(1, hexA(col, 0));
     x.fillStyle = r; x.fillRect(0, 0, W, H);
     // barber-pole stripes along the bottom
     x.save(); x.beginPath(); x.rect(0, H - base * 0.03, W, base * 0.03); x.clip();
-    for (var sx = -H; sx < W + H; sx += base * 0.06) { x.fillStyle = (Math.round(sx / (base * 0.06)) % 2) ? '#ffffff' : col; x.beginPath(); x.moveTo(sx, H); x.lineTo(sx + base * 0.03, H); x.lineTo(sx + base * 0.06, H - base * 0.03); x.lineTo(sx + base * 0.03, H - base * 0.03); x.fill(); }
+    for (var sx = -H; sx < W + H; sx += base * 0.06) { x.fillStyle = (Math.round(sx / (base * 0.06)) % 2) ? '#0b0906' : col; x.beginPath(); x.moveTo(sx, H); x.lineTo(sx + base * 0.03, H); x.lineTo(sx + base * 0.06, H - base * 0.03); x.lineTo(sx + base * 0.03, H - base * 0.03); x.fill(); }
     x.restore();
     var lim = logo && logo._img && logo._img.naturalWidth ? logo._img : null, y = H * 0.4;
     if (lim) { var lh = base * 0.2, lw = lh * lim.naturalWidth / lim.naturalHeight; x.drawImage(lim, (W - lw) / 2, H * 0.36 - lh - base * 0.03, lw, lh); y = H * 0.44; }
-    x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = '#fff';
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    var gt = x.createLinearGradient(0, y - base * 0.06, 0, y + base * 0.06); gt.addColorStop(0, '#FBE7A1'); gt.addColorStop(0.55, '#E0AA3E'); gt.addColorStop(1, '#B8862B'); x.fillStyle = gt;
     var big = kind === 'intro' ? (S.introTitle || S.shop || S.handle || 'Pro Level Cuts') : (S.outroTitle || 'Book now'), small1 = kind === 'intro' ? (S.introSub || (S.shop && S.handle ? S.handle : 'Fresh cuts · clean lines')) : (S.outroSub || S.book || 'Link in bio'), small2 = kind === 'intro' ? '' : (S.handle || S.shop || '');
     fit(x, big.toUpperCase(), '900 {s}px ' + FONT, base * 0.1, W * 0.86); x.fillText(big.toUpperCase(), W / 2, y);
     x.fillStyle = col; x.fillRect(W / 2 - base * 0.08, y + base * 0.075, base * 0.16, Math.max(3, base * 0.008));
-    x.fillStyle = 'rgba(255,255,255,0.88)'; fit(x, small1, '700 {s}px ' + FONT2, base * 0.045, W * 0.86); x.fillText(small1, W / 2, y + base * 0.15);
+    x.fillStyle = 'rgba(245,236,214,0.92)'; fit(x, small1, '700 {s}px ' + FONT2, base * 0.045, W * 0.86); x.fillText(small1, W / 2, y + base * 0.15);
     if (small2) { x.fillStyle = 'rgba(255,255,255,0.7)'; fit(x, small2, '600 {s}px ' + FONT2, base * 0.038, W * 0.86); x.fillText(small2, W / 2, y + base * 0.225); }
     return c;
   }
