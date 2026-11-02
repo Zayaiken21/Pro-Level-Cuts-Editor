@@ -120,7 +120,8 @@
   function render() {
     var c = list.find(function (x) { return x.id === cur; });
     $('vidNameShow').textContent = c ? c.name : 'New video';
-    $('vidList').innerHTML = list.slice().sort(function (a, b) { return b.updated - a.updated; }).map(function (x) {
+    var curEmpty = F ? isEmpty(F.data()) : true;
+    $('vidList').innerHTML = list.slice().sort(function (a, b) { return b.updated - a.updated; }).filter(function (x) { return !(x.id === cur && curEmpty); }).map(function (x) {
       var on = x.id === cur, n = x.clips || 0;
       return '<div role="button" tabindex="0" class="sc-proj pv-tile' + (on ? ' on' : '') + '" data-vid="' + x.id + '" aria-pressed="' + on + '">' +
         (x.thumb ? '<img src="' + x.thumb + '" alt="">' : '<span class="sc-proj-ph">' + (n ? '⏳' : '🎬') + '</span>') +
@@ -149,7 +150,9 @@
   function saveCur(force) {
     if (!F || !cur) return Promise.resolve();
     var d = F.data(), s = sig(d); if (!force && s === lastSig) return Promise.resolve();
+    var wasEmpty = isEmpty(lastSig ? JSON.parse(lastSig) : null);
     lastSig = s; blobIds(d).forEach(function (id) { keep[id] = 1; });
+    if (wasEmpty !== isEmpty(d)) setTimeout(render, 0);
     var c = list.find(function (x) { return x.id === cur; }); if (!c) return Promise.resolve();
     c.updated = Date.now(); c.clips = (d.clips || []).length; refreshThumb(c, d);
     $('vidSaved').textContent = 'Saved · ' + ago(Date.now());
@@ -174,11 +177,12 @@
   function delVid(id) {
     var x = list.find(function (q) { return q.id === id; }); if (!x) return;
     var empty = id === cur ? isEmpty(F.data()) : !x.clips;
+    if (id === cur && empty && list.length === 1) { YB.toast('Nothing to delete — add a video to start'); return; }
     if (!empty && !confirm('Delete "' + x.name + '"? This can’t be undone.')) return;
     var rest = list.filter(function (q) { return q.id !== id; });
     var step = id !== cur ? Promise.resolve() : (rest.length ? openVid(rest.slice().sort(function (a, b) { return b.updated - a.updated; })[0].id) : F.open(null).then(function () { lastSig = sig(F.data()); }));
     return step.then(function () {
-      if (id === cur && !rest.length) { x.name = 'Video 1'; x.clips = 0; x.thumb = ''; x.thumbKey = ''; x.updated = Date.now(); return put('vproj:' + id, F.data()).then(function () { return put(K('vlist'), list); }); }   // nothing left: a fresh, empty video
+      if (id === cur && !rest.length) { x.name = 'New video'; x.clips = 0; x.thumb = ''; x.thumbKey = ''; x.updated = Date.now(); return put('vproj:' + id, F.data()).then(function () { return put(K('vlist'), list); }); }   // nothing left: a fresh, empty video that isn't shown until something is added
       list = list.filter(function (q) { return q.id !== id; });
       return get('vproj:' + id).then(function (d) {
         var still = {}; return Promise.all(list.map(function (q) { return get('vproj:' + q.id).then(function (dd) { blobIds(dd).forEach(function (b) { still[b] = 1; }); }); })).then(function () {
