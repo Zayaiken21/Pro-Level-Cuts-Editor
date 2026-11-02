@@ -1547,6 +1547,17 @@ video.fm-thumb { pointer-events: none; background: #000; }
 .fm-tool-pick { position: relative; }
 .fm-tool-pick select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; }
 
+/* merged clips read as one video */
+.fm-tclip.grp { border-top: 3px solid #fbbf24; }
+.fm-tclip.grp-l { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left-width: 0; }
+.fm-tclip.grp-r { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right-width: 0; }
+.fm-tclip.grp-l::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px dashed rgba(251,191,36,.6); z-index: 2; }
+.fm-grptag { position: absolute; left: 14px; bottom: 2px; z-index: 3; font-style: normal; font-size: .64rem; font-weight: 800; color: #111; background: #fbbf24; border-radius: 5px; padding: 0 5px; white-space: nowrap; pointer-events: none; }
+.fm-tool-merge { background: var(--primary); border-color: var(--primary); }
+.fm-tool-merge span { color: var(--primary-ink); }
+
+.fm-emptyundo { margin-top: 10px; }
+
 /* ===== Pro Level Cuts brand ===== */
 :root { --font-display: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif; --font: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --gold: #e0aa3e; --gold-hi: #ffe7a3; --gold-deep: #c8922b; }
 .btn:not(.btn-ghost) { background: linear-gradient(180deg, #ffe7a3, #e9b949 45%, #c8922b); border-color: #c8922b; }
