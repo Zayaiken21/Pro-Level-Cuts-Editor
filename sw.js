@@ -1,7 +1,7 @@
 /* Pro Level Cuts — service worker
    Network first (so your edits show up right away), cache as offline backup.
    Bump CACHE when you want installed copies to drop old files. */
-const CACHE = 'plc-v19';
+const CACHE = 'plc-v1';
 const ASSETS = [
   './', 'index.html', 'showcase.html', 'formatter.html', 'css/style.css',
   'js/core.js', 'js/vendor/mp4-muxer.min.js', 'js/fullscreen.js', 'js/showcase-fx.js', 'js/showcase-fold.js', 'js/showcase-p2p.js', 'js/vendor/peerjs.min.js', 'js/showcase.js', 'js/formatter.js', 'js/formatter-pro.js', 'js/fx-float.js',
