@@ -50,6 +50,45 @@
     try { var t = document.createElement('canvas'), k = 160 / Math.max(c.width, c.height); t.width = Math.round(c.width * k); t.height = Math.round(c.height * k); t.getContext('2d').drawImage(c, 0, 0, t.width, t.height); return t.toDataURL('image/jpeg', 0.7); } catch (e) { return ''; }
   }
   function sig(d) { return JSON.stringify(d); }
+  // a picture of the video itself: the first clip's frame (or the first photo layer), for the list
+  function makeThumb(d) {
+    var c0 = d && (d.clips || [])[0], im0 = d && (d.overlays || []).find(function (o) { return o.type === 'image' && o.blobId; });
+    var src = c0 ? c0.blobId : im0 ? im0.blobId : ''; if (!src) return Promise.resolve('');
+    return F.blob(src).then(function (b) {
+      if (!b) return '';
+      var url = URL.createObjectURL(b);
+      return new Promise(function (res) {
+        var done = false, W = 240, H = 300;
+        function draw(el, w, h) {
+          if (done || !w || !h) return; done = true;
+          try { var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var x = cv.getContext('2d'), k = Math.max(W / w, H / h); x.fillStyle = '#000'; x.fillRect(0, 0, W, H); x.drawImage(el, (W - w * k) / 2, (H - h * k) / 2, w * k, h * k); res(cv.toDataURL('image/jpeg', 0.8)); }
+          catch (e) { res(''); }
+          setTimeout(function () { URL.revokeObjectURL(url); if (el.tagName === 'VIDEO') { el.removeAttribute('src'); el.load(); } }, 100);
+        }
+        setTimeout(function () { if (!done) { done = true; res(''); URL.revokeObjectURL(url); } }, 8000);
+        if (!c0) { var im = new Image(); im.onload = function () { draw(im, im.naturalWidth, im.naturalHeight); }; im.onerror = function () { if (!done) { done = true; res(''); } }; im.src = url; return; }
+        var v = document.createElement('video'), at = Math.max(0.05, (c0.in || 0) + 0.15);
+        v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto';
+        v.addEventListener('seeked', function () { draw(v, v.videoWidth, v.videoHeight); });
+        v.addEventListener('loadeddata', function () { try { v.currentTime = at; } catch (e) { draw(v, v.videoWidth, v.videoHeight); } });
+        v.src = url;
+        var pr = v.play(); if (pr && pr.then) pr.then(function () { v.pause(); }, function () {});   // iPhone shows frames only after a start
+      });
+    });
+  }
+  var thumbBusy = {};
+  function refreshThumb(item, d) {
+    var c0 = d && (d.clips || [])[0], key = c0 ? c0.blobId + '@' + (c0.in || 0) : ((d && (d.overlays || []).find(function (o) { return o.type === 'image'; })) || {}).blobId || '';
+    if (item.thumbKey === key || thumbBusy[item.id]) return;
+    thumbBusy[item.id] = 1;
+    makeThumb(d).then(function (u) { delete thumbBusy[item.id]; item.thumbKey = key; item.thumb = u || ''; put(K('vlist'), list); render(); });
+  }
+  function isEmpty(d) { return !d || (!(d.clips || []).length && !(d.overlays || []).some(function (o) { return o.type !== 'track'; })); }
+  function dropIfEmpty(id) {   // an empty video isn't kept when you move on (like an empty photo project)
+    var d = id === cur ? F.data() : null; if (!isEmpty(d)) return Promise.resolve();
+    list = list.filter(function (x) { return x.id !== id; });
+    return del('vproj:' + id).then(function () { return put(K('vlist'), list); });
+  }
 
   /* ---------- the card ---------- */
   function build() {   // the same look as the Project part of Photo Showcase
@@ -83,10 +122,11 @@
     $('vidNameShow').textContent = c ? c.name : 'New video';
     $('vidList').innerHTML = list.slice().sort(function (a, b) { return b.updated - a.updated; }).map(function (x) {
       var on = x.id === cur, n = x.clips || 0;
-      return '<button type="button" class="sc-proj' + (on ? ' on' : '') + '" data-vid="' + x.id + '" aria-pressed="' + on + '">' +
-        (x.thumb ? '<img src="' + x.thumb + '" alt="">' : '<span class="sc-proj-ph">🎬</span>') +
+      return '<div role="button" tabindex="0" class="sc-proj pv-tile' + (on ? ' on' : '') + '" data-vid="' + x.id + '" aria-pressed="' + on + '">' +
+        (x.thumb ? '<img src="' + x.thumb + '" alt="">' : '<span class="sc-proj-ph">' + (n ? '⏳' : '🎬') + '</span>') +
+        '<button type="button" class="sc-x pv-del" data-vdel="' + x.id + '" aria-label="Delete ' + esc(x.name) + '">✕</button>' +
         '<b>' + esc(x.name) + '</b><span class="muted small">' + n + ' clip' + (n === 1 ? '' : 's') + '</span>' +
-        '<span class="muted small">' + (on ? 'Open now' : ago(x.updated)) + '</span></button>';
+        '<span class="muted small">' + (on ? 'Open now' : ago(x.updated)) + '</span></div>';
     }).join('');
     var ib = $('vidInbox'); ib.hidden = !inbox.length;
     ib.innerHTML = inbox.length ? '<h3>📥 Requests for you (' + inbox.length + ')</h3><div class="sc-inbox">' + inbox.map(function (it) {
@@ -111,31 +151,41 @@
     var d = F.data(), s = sig(d); if (!force && s === lastSig) return Promise.resolve();
     lastSig = s; blobIds(d).forEach(function (id) { keep[id] = 1; });
     var c = list.find(function (x) { return x.id === cur; }); if (!c) return Promise.resolve();
-    c.updated = Date.now(); c.clips = (d.clips || []).length; var th = thumb(); if (th) c.thumb = th;
+    c.updated = Date.now(); c.clips = (d.clips || []).length; refreshThumb(c, d);
     $('vidSaved').textContent = 'Saved · ' + ago(Date.now());
     return put('vproj:' + cur, d).then(function () { return put(K('vlist'), list); });
   }
   function openVid(id) {
-    return saveCur().then(function () { return get('vproj:' + id); }).then(function (d) {
+    var from = cur;
+    return saveCur().then(function () { return id !== from ? dropIfEmpty(from) : null; }).then(function () { return get('vproj:' + id); }).then(function (d) {
       cur = id; YB.store.set(K('vcur'), id); YB.store.set('fmOwner', uid);
       return F.open(d || null);
     }).then(function () { lastSig = sig(F.data()); render(); });
   }
   function newVid(data, name) {
-    return saveCur().then(function () {
-      var id = 'v' + YB.uid(); list.push({ id: id, name: name || 'Video ' + (list.length + 1), updated: Date.now(), thumb: '' });
+    var from = cur;
+    return saveCur().then(function () { return dropIfEmpty(from); }).then(function () {
+      var id = 'v' + YB.uid(), n = list.length + 1; while (list.some(function (x) { return x.name === 'Video ' + n; })) n++;
+      list.push({ id: id, name: name || 'Video ' + n, updated: Date.now(), thumb: '' });
       cur = id; YB.store.set(K('vcur'), id); YB.store.set('fmOwner', uid);
       return F.open(data || null).then(function () { lastSig = ''; return saveCur(true); });
     }).then(render);
   }
   function delVid(id) {
-    var x = list.find(function (q) { return q.id === id; }); if (!x || !confirm('Delete "' + x.name + '"? This can’t be undone.')) return;
-    list = list.filter(function (q) { return q.id !== id; });
-    get('vproj:' + id).then(function (d) {
-      var still = {}; return Promise.all(list.map(function (q) { return get('vproj:' + q.id).then(function (dd) { blobIds(dd).forEach(function (b) { still[b] = 1; }); }); })).then(function () {
-        blobIds(d).forEach(function (b) { if (!still[b]) { delete keep[b]; F.delBlob(b); } });
-      });
-    }).then(function () { return del('vproj:' + id); }).then(function () { return put(K('vlist'), list); }).then(function () { render(); YB.toast('Video deleted'); });
+    var x = list.find(function (q) { return q.id === id; }); if (!x) return;
+    var empty = id === cur ? isEmpty(F.data()) : !x.clips;
+    if (!empty && !confirm('Delete "' + x.name + '"? This can’t be undone.')) return;
+    var rest = list.filter(function (q) { return q.id !== id; });
+    var step = id !== cur ? Promise.resolve() : (rest.length ? openVid(rest.slice().sort(function (a, b) { return b.updated - a.updated; })[0].id) : F.open(null).then(function () { lastSig = sig(F.data()); }));
+    return step.then(function () {
+      if (id === cur && !rest.length) { x.name = 'Video 1'; x.clips = 0; x.thumb = ''; x.thumbKey = ''; x.updated = Date.now(); return put('vproj:' + id, F.data()).then(function () { return put(K('vlist'), list); }); }   // nothing left: a fresh, empty video
+      list = list.filter(function (q) { return q.id !== id; });
+      return get('vproj:' + id).then(function (d) {
+        var still = {}; return Promise.all(list.map(function (q) { return get('vproj:' + q.id).then(function (dd) { blobIds(dd).forEach(function (b) { still[b] = 1; }); }); })).then(function () {
+          blobIds(d).forEach(function (b) { if (!still[b]) { delete keep[b]; F.delBlob(b); } });
+        });
+      }).then(function () { return del('vproj:' + id); }).then(function () { return put(K('vlist'), list); });
+    }).then(function () { render(); YB.toast('Video deleted'); });
   }
 
   /* ---------- sending ---------- */
@@ -268,6 +318,8 @@
       return saveCur(true);
     }).then(function () {
       render();
+      var chain = Promise.resolve();
+      list.forEach(function (x) { if (x.clips && !x.thumbKey && x.id !== cur) chain = chain.then(function () { return get('vproj:' + x.id).then(function (d) { refreshThumb(x, d); }); }); });
       setInterval(function () { saveCur(); }, 2500);
       document.addEventListener('visibilitychange', function () { if (document.hidden) saveCur(); else deliverSoon(); });
       window.addEventListener('pagehide', function () { saveCur(); });
@@ -279,21 +331,12 @@
       var n = prompt('Name this video', c.name); if (n == null) return; n = n.trim().replace(/\s+/g, ' '); if (!n) return;
       c.name = n.slice(0, 60); put(K('vlist'), list).then(render);
     });
-    $('vidDelete').addEventListener('click', function () {
-      var c = list.find(function (x) { return x.id === cur; }); if (!c) return;
-      if (!confirm('Delete "' + c.name + '"? This can’t be undone.')) return;
-      var rest = list.filter(function (x) { return x.id !== cur; }), gone = cur;
-      (rest.length ? openVid(rest.sort(function (a, b) { return b.updated - a.updated; })[0].id) : newVid(null)).then(function () {
-        list = list.filter(function (x) { return x.id !== gone; });
-        return get('vproj:' + gone).then(function (d) {
-          var still = {}; return Promise.all(list.map(function (q) { return get('vproj:' + q.id).then(function (dd) { blobIds(dd).forEach(function (b) { still[b] = 1; }); }); })).then(function () { blobIds(d).forEach(function (b) { if (!still[b]) { delete keep[b]; F.delBlob(b); } }); });
-        }).then(function () { return del('vproj:' + gone); }).then(function () { return put(K('vlist'), list); });
-      }).then(function () { render(); YB.toast('Video deleted'); });
-    });
+    $('vidDelete').addEventListener('click', function () { delVid(cur); });
     $('vidNew').addEventListener('click', function () { newVid(null).then(function () { YB.toast('New video — add your clips'); }); });
     $('vidSend').addEventListener('click', showSend);
     $('vidBackup').addEventListener('click', backup);
     $('vidRestore').addEventListener('change', function () { restore(this.files[0]); this.value = ''; });
+    $('vidList').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-vid]')) { e.preventDefault(); e.target.click(); } });
     $('vidCard').addEventListener('click', function (e) {
       var b;
       if ((b = e.target.closest('[data-vdel]'))) { delVid(b.getAttribute('data-vdel')); return; }
