@@ -52,36 +52,55 @@
   function sig(d) { return JSON.stringify(d); }
 
   /* ---------- the card ---------- */
-  function build() {
+  function build() {   // the same look as the Project part of Photo Showcase
     var host = document.querySelector('.cx-layout > .stack') || document.querySelector('main');
-    var sec = document.createElement('section'); sec.className = 'card'; sec.id = 'vidCard'; sec.setAttribute('aria-labelledby', 'vidTitle');
-    sec.innerHTML = '<h2 id="vidTitle">🎬 Your videos <span class="muted small" id="vidWho"></span></h2>' +
-      '<div class="pv-row"><label class="sc-field pv-name"><span>This video</span><input id="vidName" type="text" maxlength="60" placeholder="Name this video"></label>' +
-      '<span class="muted small" id="vidSaved" aria-live="polite"></span></div>' +
-      '<div class="pv-btns"><button type="button" class="btn btn-sm" id="vidNew">＋ New video</button><button type="button" class="btn btn-ghost btn-sm" id="vidSend">📤 Send to someone</button>' +
-      '<button type="button" class="btn btn-ghost btn-sm" id="vidBackup">⬇ Backup</button><label class="btn btn-ghost btn-sm fm-upload">⬆ Open a backup<input type="file" id="vidRestore" accept=".json,application/json" hidden></label></div>' +
-      '<div id="vidPanel" class="sc-acctpanel" hidden></div>' +
-      '<p class="small muted" id="vidNet"></p>' +
-      '<div id="vidInbox"></div><div class="pv-list" id="vidList"></div><div id="vidOutbox"></div>';
+    var sec = document.createElement('section'); sec.className = 'card sc-projcard'; sec.id = 'vidCard'; sec.setAttribute('aria-labelledby', 'vidTitle');
+    sec.innerHTML = '<div class="sc-projhead">' +
+        '<div><h2 id="vidTitle">🎬 Video: <span id="vidNameShow">New video</span></h2><p class="small pv-saved" id="vidSaved">Saves by itself as you work</p><p class="small sc-net" id="vidNet" aria-live="polite"></p></div>' +
+        '<div class="row sc-projbtns">' +
+          '<button class="btn" type="button" id="vidNew">➕ New video</button>' +
+          '<button class="btn btn-ghost" type="button" id="vidRename">✏️ Rename</button>' +
+          '<button class="btn btn-ghost" type="button" id="vidSend">📤 Share</button>' +
+          '<button class="btn btn-ghost" type="button" id="vidDelete">🗑 Delete</button>' +
+        '</div></div>' +
+      '<div class="sc-sharepanel" id="vidPanel" hidden></div>' +
+      '<div class="sc-inboxbox" id="vidInbox" hidden></div>' +
+      '<p class="muted small">Make one video per client (or per day). Your clips, layers, effects, text and music save on this device by themselves, so you can leave one and come back to it later. Tap a video to open it.</p>' +
+      '<div class="sc-projlist" id="vidList"></div>' +
+      '<div class="sc-inboxbox" id="vidOutbox" hidden></div>' +
+      '<details class="sc-bk"><summary>💾 Backup &amp; move to another phone or computer</summary>' +
+        '<p class="muted small">Make a backup file and keep it in iCloud Drive, Google Drive, Files or your email. On any device, open this page and tap <b>Open backup or shared file</b> to get your video back.</p>' +
+        '<div class="row"><button class="btn" type="button" id="vidBackup">⬇ Back up this video</button>' +
+        '<label class="btn btn-ghost">⬆ Open backup or shared file<input type="file" id="vidRestore" accept=".json,application/json" hidden></label></div></details>';
     host.insertBefore(sec, host.firstChild);
   }
+  function ago(t) {
+    var s = Math.max(0, (Date.now() - (t || 0)) / 1000);
+    return s < 60 ? 'just now' : s < 3600 ? Math.round(s / 60) + ' min ago' : s < 86400 ? Math.round(s / 3600) + ' h ago' : when(t);
+  }
   function render() {
-    $('vidWho').textContent = me ? '· ' + me.name : '· not signed in';
     var c = list.find(function (x) { return x.id === cur; });
-    if (document.activeElement !== $('vidName')) $('vidName').value = c ? c.name : '';
-    $('vidList').innerHTML = list.length > 1 || (list.length && !c) ? '<div class="label">Saved videos (' + list.length + ')</div><div class="pv-grid">' + list.slice().sort(function (a, b) { return b.updated - a.updated; }).map(function (x) {
-      return '<div class="pv-item' + (x.id === cur ? ' on' : '') + '" data-vid="' + x.id + '">' + (x.thumb ? '<img src="' + x.thumb + '" alt="">' : '<span class="pv-ph">🎬</span>') +
-        '<span class="pv-meta"><b>' + esc(x.name) + '</b><span class="muted small">' + (x.id === cur ? 'Open now' : when(x.updated)) + '</span></span>' +
-        (x.id === cur ? '' : '<button type="button" class="sc-x" data-vdel="' + x.id + '" aria-label="Delete ' + esc(x.name) + '">✕</button>') + '</div>';
+    $('vidNameShow').textContent = c ? c.name : 'New video';
+    $('vidList').innerHTML = list.slice().sort(function (a, b) { return b.updated - a.updated; }).map(function (x) {
+      var on = x.id === cur, n = x.clips || 0;
+      return '<button type="button" class="sc-proj' + (on ? ' on' : '') + '" data-vid="' + x.id + '" aria-pressed="' + on + '">' +
+        (x.thumb ? '<img src="' + x.thumb + '" alt="">' : '<span class="sc-proj-ph">🎬</span>') +
+        '<b>' + esc(x.name) + '</b><span class="muted small">' + n + ' clip' + (n === 1 ? '' : 's') + '</span>' +
+        '<span class="muted small">' + (on ? 'Open now' : ago(x.updated)) + '</span></button>';
+    }).join('');
+    var ib = $('vidInbox'); ib.hidden = !inbox.length;
+    ib.innerHTML = inbox.length ? '<h3>📥 Requests for you (' + inbox.length + ')</h3><div class="sc-inbox">' + inbox.map(function (it) {
+      var n = ((it.data || {}).clips || []).length;
+      return '<div class="sc-inb">' + (it.thumb ? '<img src="' + it.thumb + '" alt="">' : '<span class="sc-proj-ph">🎬</span>') +
+        '<div><b>' + esc(it.name) + '</b><span class="muted small">' + esc(it.from) + ' wants to send you this · ' + n + ' clip' + (n === 1 ? '' : 's') + ' · ' + ago(it.received) + '</span></div>' +
+        '<div class="row"><button class="btn" type="button" data-vacc="' + it.id + '">✅ Accept</button><button class="btn btn-ghost" type="button" data-vdec="' + it.id + '">✕ Decline</button></div></div>';
     }).join('') + '</div>' : '';
-    $('vidInbox').innerHTML = inbox.length ? '<div class="label">📥 Sent to you (' + inbox.length + ')</div>' + inbox.map(function (it) {
-      return '<div class="pv-req">' + (it.thumb ? '<img src="' + it.thumb + '" alt="">' : '<span class="pv-ph">🎬</span>') + '<span class="pv-meta"><b>' + esc(it.name) + '</b><span class="muted small">from ' + esc(it.from) + ' · ' + when(it.received) + '</span></span>' +
-        '<button type="button" class="btn btn-sm" data-vacc="' + it.id + '">Accept</button><button type="button" class="btn btn-ghost btn-sm" data-vdec="' + it.id + '">Decline</button></div>';
-    }).join('') : '';
-    $('vidOutbox').innerHTML = outbox.length ? '<div class="label">📤 Outbox (' + outbox.length + ')</div>' + outbox.map(function (it) {
+    var ob = $('vidOutbox'); ob.hidden = !outbox.length;
+    ob.innerHTML = outbox.length ? '<h3>📤 Outbox (' + outbox.length + ')</h3><div class="sc-inbox">' + outbox.map(function (it) {
       var st = it.status === 'accepted' ? '✅ Accepted' : it.status === 'declined' ? '✖ Declined' : it.status === 'delivered' ? '📬 Delivered — waiting for them to accept' : '⏳ Waiting — goes by itself when you’re both on the Video Editor';
-      return '<div class="pv-req"><span class="pv-meta"><b>' + esc(it.name) + '</b><span class="muted small">to ' + esc(it.to) + ' · <span id="vob_' + it.id + '">' + st + '</span></span></span><button type="button" class="sc-x" data-vob="' + it.id + '" aria-label="Remove from Outbox">✕</button></div>';
-    }).join('') : '';
+      return '<div class="sc-inb">' + (it.thumb ? '<img src="' + it.thumb + '" alt="">' : '<span class="sc-proj-ph">🎬</span>') + '<div><b>' + esc(it.name) + '</b><span class="muted small">to ' + esc(it.to) + ' · <span id="vob_' + it.id + '">' + st + '</span></span></div>' +
+        '<div class="row"><button class="btn btn-ghost" type="button" data-vob="' + it.id + '">' + (it.status === 'waiting' ? '✕ Cancel' : '✕ Clear') + '</button></div></div>';
+    }).join('') + '</div>' : '';
     var nb = document.querySelector('[data-acct-btn]'); if (nb) nb.classList.toggle('has-new', inbox.length > 0);
   }
   function panel(html) { var p = $('vidPanel'); p.innerHTML = html || ''; p.hidden = !html; }
@@ -93,7 +112,7 @@
     lastSig = s; blobIds(d).forEach(function (id) { keep[id] = 1; });
     var c = list.find(function (x) { return x.id === cur; }); if (!c) return Promise.resolve();
     c.updated = Date.now(); c.clips = (d.clips || []).length; var th = thumb(); if (th) c.thumb = th;
-    $('vidSaved').textContent = '✓ Saved';
+    $('vidSaved').textContent = 'Saved · ' + ago(Date.now());
     return put('vproj:' + cur, d).then(function () { return put(K('vlist'), list); });
   }
   function openVid(id) {
@@ -123,7 +142,7 @@
   function showSend() {
     if (!me) { YB.toast('Sign in first — tap 👤 at the top'); if (window.PLCAcct) PLCAcct.open(); return; }
     var c = list.find(function (x) { return x.id === cur; }); if (!c || !(F.clips().length)) { YB.toast('Add a video first'); return; }
-    panel('<label class="sc-field"><span>Send "' + esc(c.name) + '" to (their name on Pro Level Cuts)</span><input id="vsTo" type="text" autocomplete="off" maxlength="40" placeholder="Their name"></label>' +
+    panel('<h3>📤 Share "' + esc(c.name) + '"</h3><label class="sc-field"><span>Send to (their name on Pro Level Cuts)</span><input id="vsTo" type="text" autocomplete="off" maxlength="40" placeholder="Their name"></label>' +
       '<div class="row" style="gap:8px"><button type="button" class="btn" id="vsGo">📤 Send</button><button type="button" class="btn btn-ghost" id="vsNo">Cancel</button></div>' +
       '<p class="muted small" id="vsMsg">It goes into your Outbox and is delivered by itself the next time you’re both on the Video Editor. They choose Accept or Decline.</p>');
     $('vsTo').focus(); $('vsNo').onclick = function () { panel(''); };
@@ -255,8 +274,22 @@
       if (me && window.YBP2PV) YBP2PV.listen(me.name, H);
       setInterval(deliver, 20000);
     });
-    $('vidName').addEventListener('input', function () { var c = list.find(function (x) { return x.id === cur; }); if (!c) return; c.name = this.value.trim() || 'Untitled video'; put(K('vlist'), list); });
-    $('vidName').addEventListener('change', render);
+    $('vidRename').addEventListener('click', function () {
+      var c = list.find(function (x) { return x.id === cur; }); if (!c) return;
+      var n = prompt('Name this video', c.name); if (n == null) return; n = n.trim().replace(/\s+/g, ' '); if (!n) return;
+      c.name = n.slice(0, 60); put(K('vlist'), list).then(render);
+    });
+    $('vidDelete').addEventListener('click', function () {
+      var c = list.find(function (x) { return x.id === cur; }); if (!c) return;
+      if (!confirm('Delete "' + c.name + '"? This can’t be undone.')) return;
+      var rest = list.filter(function (x) { return x.id !== cur; }), gone = cur;
+      (rest.length ? openVid(rest.sort(function (a, b) { return b.updated - a.updated; })[0].id) : newVid(null)).then(function () {
+        list = list.filter(function (x) { return x.id !== gone; });
+        return get('vproj:' + gone).then(function (d) {
+          var still = {}; return Promise.all(list.map(function (q) { return get('vproj:' + q.id).then(function (dd) { blobIds(dd).forEach(function (b) { still[b] = 1; }); }); })).then(function () { blobIds(d).forEach(function (b) { if (!still[b]) { delete keep[b]; F.delBlob(b); } }); });
+        }).then(function () { return del('vproj:' + gone); }).then(function () { return put(K('vlist'), list); });
+      }).then(function () { render(); YB.toast('Video deleted'); });
+    });
     $('vidNew').addEventListener('click', function () { newVid(null).then(function () { YB.toast('New video — add your clips'); }); });
     $('vidSend').addEventListener('click', showSend);
     $('vidBackup').addEventListener('click', backup);

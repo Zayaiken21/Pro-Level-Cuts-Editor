@@ -13,8 +13,8 @@
     ],
     showcase: [
       { title: 'Photo Showcase', text: 'Turn your cut photos into pro posts and slideshow videos. Each part of the page folds up — tap a title to open or close it.' },
-      { el: '#acctCard', title: 'Your account', text: 'Sign in with your name and PIN so your projects are yours. Requests other barbers send you show up here to Accept or Decline, and your Outbox shows what you sent.' },
-      { el: '#projCard', title: 'Projects', text: 'Keep one project per client or per day. Everything saves by itself. Share sends a project to someone by their name, and Backup makes a file you can keep or move to another phone.' },
+      { el: '[data-acct-btn]', title: 'Your account', text: 'Tap 👤 at the top of any page to sign in with your name and PIN. Your photo projects and your videos are kept under your name.' },
+      { el: '#projCard', title: 'Projects', text: 'Keep one project per client or per day. Everything saves by itself. Share sends a project to someone by their name — requests sent to you show up here to Accept or Decline, with your Outbox below. Backup makes a file you can keep or move to another phone.' },
       { el: '#phCard', title: '1 · Add photos', text: 'Tap Choose photos to add your shots. Pick the size (Instagram, theCut, Reels, YouTube…) and tap BEFORE or AFTER under each photo.' },
       { el: '#editCard', title: '2 · Crop & style', text: 'Drag and pinch to crop, straighten and rotate. Pro looks and Fine-tune make the cut pop — then Save this photo.', after: 'Shows up once you add photos.' },
       { el: '#setCard', title: '3 · Before & after per client', text: 'Each client gets a Before side and an After side. Add as many photos to each as you like; each client becomes one before | after collage.', after: 'Shows up once you add photos.' },
@@ -27,6 +27,7 @@
     ],
     formatter: [
       { title: 'Video Editor', text: 'Edit your cut videos for every platform — trim, frame, add text and overlays, and save an MP4.' },
+      { el: '#vidCard', title: 'Your videos', text: 'One video per client or per day — each saves by itself under your account. Share sends it to someone by their name; requests sent to you show up here to Accept or Decline. Backup makes a file you can keep or move to another phone.' },
       { el: 'section[aria-labelledby="clipsTitle"]', title: '1 · Videos', text: 'Add your clips. Trim each one and drag them into the order they should play.' },
       { el: '#formatCard', title: '2 · Format & frame', text: 'Choose where you\'re posting — Instagram Reels & Stories, TikTok, YouTube Shorts, an Instagram or theCut post, or a YouTube video — then the background, frame and fit.', after: 'Shows up once you add a video.' },
       { el: '#overlayCard', title: '3 · Overlays & stickers', text: 'Add titles, text, your logo and barber stickers — clippers, razor, scissors, comb, barber pole, crown. Drag them right on the preview to place and size them.', after: 'Shows up once you add a video.' },

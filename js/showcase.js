@@ -2075,7 +2075,7 @@
         return kv('readwrite', function (st) { st.put(l, 'inbox:' + who); st.put(g.slice(0, 300), 'got:' + who); });
       }).then(function () {
         p2pHandlers.status(p2pState); renderInbox();
-        if (window.YBFold) YBFold.open('acctCard');
+        if (window.YBFold) YBFold.open('projCard');
         YB.toast('📥 ' + info.from + ' sent you "' + info.name + '" — Accept or Decline it at the top');
       });
     },

@@ -1625,6 +1625,9 @@ h1 { text-transform: uppercase; font-weight: 700; }
 .plc-swatches span { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--muted); }
 .plc-swatches i { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(255,255,255,.15); display: inline-block; }
 /* one account for the whole site */
+#acctCard { display: none !important; }
+.pv-saved { color: var(--muted); margin: 0; }
+.sc-projcard.sc-folded #vidSaved { display: none; }
 .plc-acctbtn { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px 0 6px; margin-left: auto; border-radius: 999px; border: 1px solid var(--line-soft); background: rgba(255,255,255,.04); color: var(--text); font: inherit; font-weight: 700; font-size: .86rem; cursor: pointer; max-width: 150px; }
 .plc-acctbtn .plc-q { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: .95rem; background: rgba(224,170,62,.15); }
 .plc-acctbtn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
